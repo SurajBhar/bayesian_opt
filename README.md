@@ -91,7 +91,8 @@ conda env create -f environment.yml
 conda activate deepl
 ```
 
-For DINOv2 specific task, you can create the conda environments using seperate conda yaml file and can activate the conda environment:
+For DINOv2 specific task, you can create the conda environment using seperate conda yaml file from DINOv2 github repository and can install ray specific dependencies on top of it. 
+Alternative: You can also use environment_2.yaml file to create a conda environment:
 
 
 - **An example: For DINOv2:**
