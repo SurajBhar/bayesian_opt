@@ -81,7 +81,7 @@ To reproduce the experiments or run any part of this codebase, follow the steps 
 ### Clone the repository:
 ```bash
 git clone https://github.com/SurajBhar/bayesian_opt.git
-cd masterarbeit_sb
+cd bayesian_opt
 ```
 ### Install Dependencies:
 Create the environment from the environment.yml file:
