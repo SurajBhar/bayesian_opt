@@ -1,0 +1,10 @@
+# Ray cluster Jarvis head node address
+ray_address: "http://10.56.7.41:8265"
+
+# Working directory for the job (the directory containing src and conf)
+working_dir: "/home/sur06423/wacv_paper/wacv_paper"
+
+# Script to execute as the Ray job entry point
+entrypoint: "python src/bayesian_narr_cos/bohb_narr_cos_decay.py"
+# entrypoint: "python -c \"print('Hello, Ray!')\""
+

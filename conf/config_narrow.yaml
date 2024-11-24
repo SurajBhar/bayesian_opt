@@ -1,0 +1,87 @@
+# conf/config_narrow.yaml
+
+defaults:
+  - _self_
+
+datasets:
+  pizza_dataset:
+    name: pizza_dataset
+    num_classes: 3
+    train_dir: /home/sur06423/wacv_paper/wacv_paper/data/pizza_steak_sushi/train
+    val_dir: /home/sur06423/wacv_paper/wacv_paper/data/pizza_steak_sushi/test
+
+  daa:
+    name: DAA
+    num_classes: 34
+    train_dir: /net/polaris/storage/deeplearning/sur_data/rgb_daa/split_0/train
+    val_dir: /net/polaris/storage/deeplearning/sur_data/rgb_daa/split_0/val
+
+  imstatefarm:
+    name: imstatefarm
+    num_classes: 10
+    train_dir: /home/sur06423/wacv_paper/wacv_paper/data/imbalanced_v2/train
+    val_dir: /home/sur06423/wacv_paper/wacv_paper/data/imbalanced_v2/validation
+
+models:
+  vit:
+    type: vit_b_16
+    in_features: 768
+    mode: supervised
+
+  dinov2:
+    type: dinov2_vitb14
+    in_features: 768
+    mode: selfsupervised
+
+experiment:
+  dataset: daa  # Choose which dataset to use
+  model: dinov2  # Choose which model to use
+
+hyperparameters:
+  optimizer:
+    choices: ["AdamW"]  # Fixed to AdamW to narrow the search space
+  learning_rate:
+    lower: 1e-5
+    upper: 5e-2
+    log: true  # Logarithmic scale for learning rate search
+  weight_decay:
+    lower: 1e-5
+    upper: 1e-4
+    log: true  # Slightly higher max weight decay to help prevent overfitting
+  scheduler:
+    choices: ["SequentialLR"]  # SequentialLR = LinearLR Warmup + CosineAnnealingWarmRestarts
+    # LinearLR (Warm-Up) Parameters
+    start_factor: 0.3333333333333333  # Start at 1/3 of the base learning rate
+    end_factor: 1.0  # Gradually increase to the base learning rate
+    total_iters: 5  # Warm-up duration (5 epochs)
+    # CosineAnnealingWarmRestarts Parameters
+    T_0: 10  # First cycle duration
+    T_mult: 2  # Double the duration of subsequent cycles
+    eta_min: 0.001  # Minimum learning rate in cosine decay
+  epochs:
+    choices: [60] # Total epochs for fine-tuning
+  use_gpu:
+    enabled: true  # Use GPU for training
+  batch_size: 1024  # Batch size for training and validation
+  points_to_evaluate:
+    - learning_rate: 3e-2
+      weight_decay: 1e-4
+    - learning_rate: 3e-4
+      weight_decay: 5e-5
+
+run_config:
+  name: Dinov2_001_daa_split_0_BO_narrow
+  storage_path: /net/polaris/storage/deeplearning/sur_data/ray_results
+  checkpoint_frequency: 4
+
+tuner:
+  max_concurrent: 4  # Number of trials running in parallel
+  num_samples: 40  # Total number of trials to sample
+  resources_per_trial:
+    gpu: 1
+    cpu: 18
+
+ray:
+  num_cpus: 80
+  num_gpus: 4
+  include_dashboard: true
