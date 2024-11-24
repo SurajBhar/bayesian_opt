@@ -1,0 +1,16 @@
+name: dinov2ray
+channels:
+  - defaults
+  - pytorch
+  - nvidia
+  - conda-forge
+dependencies:
+  - python
+  - pytorch
+  - torchvision
+  - cuda-toolkit
+  - omegaconf
+  - torchmetrics
+  - fvcore
+  - iopath
+  - pip
