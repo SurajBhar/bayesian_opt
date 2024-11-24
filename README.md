@@ -2,6 +2,9 @@
 
 This repository implements a Bayesian Optimization workflow for hyperparameter tuning using the Ray Tune framework and ConfigSpace for configuration management. The implementation supports advanced scheduling and search algorithms, including the **BOHB (Bayesian Optimization with HyperBand)** scheduler.
 
+![Parallel Coordinate View](/Parallel_coordinate_view.PNG)
+![Mean Accuracy Plot](/mean_acc_plot.PNG)
+
 ---
 
 ## Table of Contents
